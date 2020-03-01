@@ -1,11 +1,16 @@
 <template>
     <div>
-        购物车
+    <ul >
+        <li></li>
+
+    </ul>
+        
     </div>
 </template>
 
 <script>
     export default {
+        
         
     }
 </script>

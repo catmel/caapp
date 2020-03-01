@@ -32,10 +32,14 @@
     <!-- 内容区 -->
     <router-view></router-view>
     <!-- 底部购物车 -->
+     <transition name="slide-fade">
+    <div class="shopx" v-show="shopcarshow">购物车板子</div>
+     </transition>
+
     <div style="width: 100%;height: 51px;"></div>
     <Row class="shop">
       <i-col span="6">
-        <div class="shop-img">
+        <div class="shop-img" @click=" shopcarshow =  !shopcarshow">
           <img src="../assets/images/SVG/shopping_cart.svg" />
         </div>
       </i-col>
@@ -51,7 +55,8 @@ import { seller } from "../api/apis";
 export default {
   data() {
     return {
-      bus: []
+      bus: [],
+      shopcarshow: false
     };
   },
 
@@ -134,7 +139,6 @@ export default {
     width: 100%;
     height: 50px;
     position: fixed;
-
     bottom: 0;
     color: #97989c;
     div {
@@ -162,6 +166,27 @@ export default {
         background: #2a333c;
       }
     }
+  }
+  .shopx {
+    width: 100%;
+    height: 50px;
+    background: red;
+    position: fixed;
+    bottom: 40px;
+  }
+
+  /* 可以设置不同的进入和离开动画 */
+  /* 设置持续时间和动画函数 */
+  .slide-fade-enter-active {
+    transition: all 0.6s ease;
+  }
+  .slide-fade-leave-active {
+    transition: all 0.6s ease;
+  }
+  .slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active for below version 2.1.8 */ {
+    transform: translateY(300px);
+    opacity: 0;
   }
 }
 </style>

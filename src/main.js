@@ -3,7 +3,8 @@ import App from './App.vue'
 import router from './router'
 import iView from 'iview';//引入iview框架
 import 'iview/dist/styles/iview.css';    // 使用框架CSS
-import store from "./store/index"
+import store from "./store/index";
+import "./assets/styles/reset.css";
 Vue.use(iView);//挂载iView到全局
 
 Vue.config.productionTip = false
