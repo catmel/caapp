@@ -1,7 +1,7 @@
 import axios from "axios";//引入axios
 
 const red =axios.create({
-    baseURL:"http://172.16.6.200:3000/api/",//设置默认地址
+    baseURL:"http://192.168.1.200:3000/api/",//设置默认地址
     timeout:10000//请求超时时间
 }) 
 

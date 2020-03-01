@@ -2,7 +2,12 @@
   <div class="goods">
     <div class="left">
       <ul class="content">
-        <li v-for="(v,i) in this.$store.state.goods" :key="i" @click="gotitle(i)" :class="{active:id == i}">
+        <li
+          v-for="(v,i) in this.$store.state.goods"
+          :key="i"
+          @click="gotitle(i)"
+          :class="{active:id == i}"
+        >
           <img v-show="v.type == 1" src="../assets/images/icoze.png" alt="图片" />
           <img v-show="v.type == 2" src="../assets/images/icojian.png" alt="图片" />
           {{v.name}}
@@ -32,14 +37,14 @@
                   <i-button
                     v-show="x.num"
                     shape="circle"
-                    style="color: #2D8CF0;border: 1px solid #2D8CF0;"
+                    style="color: #2D8CF0;border: 1px solid #2D8CF0;border-radius: 50% ;"
                   >-</i-button>
                   <input
                     type="text"
                     v-model="x.num"
                     style="width: 27px; border:0px solid transparent; text-align: center"
                   />
-                  <i-button type="primary" shape="circle">+</i-button>
+                  <i-button type="primary" shape="circle" style="  border-radius: 50% ;">+</i-button>
                 </div>
               </i-col>
             </Row>
@@ -55,10 +60,21 @@ import { goods } from "../api/apis";
 import BScroll from "better-scroll";
 
 export default {
-  data(){
-    return{
-      id:0,
-     
+  data() {
+    return {
+      id: 0, //左边选中样式id
+      scrollY: 0, //右侧列表滑动的y轴坐标
+      rightLiTops: [] //所有分类头部位置
+    };
+  },
+  watch: {
+    searchgoods() {
+      //监听数据
+      this.$nextTick(() => {
+        //左右两边滚动
+        this._initBScroll(); //右边列表高度
+        this._initRightHeight();
+      });
     }
   },
   created() {
@@ -67,13 +83,13 @@ export default {
     });
   },
   mounted() {
-     new BScroll(document.querySelector(".left"),{click:true});
-     this.goto = new BScroll(document.querySelector(".rigth"),{click:true});
+    new BScroll(document.querySelector(".left"), { click: true });
+    this.goto = new BScroll(document.querySelector(".rigth"), { click: true });
   },
-  methods:{
-    gotitle(id){
-      this.id=id
-      this.goto.scrollToElement(document.getElementById(id),600)
+  methods: {
+    gotitle(id) {
+      this.id = id;
+      this.goto.scrollToElement(document.getElementById(id), 600);
     }
   }
 };
@@ -81,10 +97,11 @@ export default {
 
 <style lang="less" scoped>
 .goods {
+
   width: 100%;
   height: 100%;
   display: flex;
-  .active{
+  .active {
     background: #fff;
   }
   .left {
@@ -92,7 +109,7 @@ export default {
     overflow: auto;
     background-color: #f4f5f7;
     height: 280px;
-  
+
     li {
       display: flex;
       align-items: center;
