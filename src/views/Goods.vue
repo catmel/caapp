@@ -18,7 +18,7 @@
     <div class="rigth">
       <ul class="content">
         <ul v-for="(v,i) in this.$store.state.goods" :key="i" :id="i">
-          <h2>{{v.name}}</h2>
+          <h3>{{v.name}}</h3>
           <li v-for="(x,y) in v.foods" :key="y">
             <img :src="x.image" alt="图片" />
             <Row>
@@ -63,19 +63,8 @@ export default {
   data() {
     return {
       id: 0, //左边选中样式id
-      scrollY: 0, //右侧列表滑动的y轴坐标
-      rightLiTops: [] //所有分类头部位置
+      scrollY:0
     };
-  },
-  watch: {
-    searchgoods() {
-      //监听数据
-      this.$nextTick(() => {
-        //左右两边滚动
-        this._initBScroll(); //右边列表高度
-        this._initRightHeight();
-      });
-    }
   },
   created() {
     goods().then(res => {
@@ -83,21 +72,49 @@ export default {
     });
   },
   mounted() {
+    // 左侧面板
     new BScroll(document.querySelector(".left"), { click: true });
-    this.goto = new BScroll(document.querySelector(".rigth"), { click: true });
+    //右侧面板
+    this.goto = new BScroll(document.querySelector(".rigth"), {
+      click: true,
+      probeType: 3
+    });
+   //监听滚动事件
+    this.goto.on("scroll", ({ y }) => {
+      this.scrollY = Math.abs(y);
+      this.divhei.forEach((v)=>{
+        if(this.scrollY>=v.min && this.scrollY<v.maix){
+        this.id=v.index
+        }
+      })
+    });
   },
+
   methods: {
     gotitle(id) {
       this.id = id;
       this.goto.scrollToElement(document.getElementById(id), 600);
     }
   }
+  , //计算属性
+  computed: {
+    divhei(){
+      var arr=[];
+      var tal=0;
+      //获取到每个盒子的div
+      var div = document.querySelectorAll(".rigth>.content ul");
+        div.forEach((v,i)=>{
+          arr.push({min:tal,maix:tal+v.offsetHeight,index:i})
+          tal+=v.offsetHeight
+        })
+      return arr
+    }}
+  
 };
 </script>
 
 <style lang="less" scoped>
 .goods {
-
   width: 100%;
   height: 100%;
   display: flex;
@@ -108,7 +125,7 @@ export default {
     width: 100px;
     overflow: auto;
     background-color: #f4f5f7;
-    height: 280px;
+    height: 360px;
 
     li {
       display: flex;
@@ -124,6 +141,13 @@ export default {
     flex: 1;
     height: 400px;
     overflow: auto;
+    h3{
+      height: 40px;
+      background: #ccc;
+      display: flex;
+      justify-items: center;
+      align-items: center
+    }
     li {
       list-style: none;
       height: 100px;
