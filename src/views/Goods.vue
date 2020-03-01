@@ -127,7 +127,7 @@ export default {
     li {
       list-style: none;
       height: 100px;
-      border-bottom: 1px solid red;
+      border-bottom: 1px solid #e6e7e9;
       display: flex;
       align-items: center;
       padding-left: 5px;
