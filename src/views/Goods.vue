@@ -33,7 +33,7 @@
                     v-show="x.num > 0"
                     shape="circle"
                     style="color: #2D8CF0;border: 1px solid #2D8CF0;border-radius: 50% ;"
-                    @click="del({i,y})"
+                    @click="  del(x.name)"
                   >-</i-button>
                   <input
                     type="text"
@@ -46,7 +46,7 @@
                     type="primary"
                     shape="circle"
                     style="  border-radius: 50% ;"
-                    @click="add({i,y})"
+                    @click="add(x.name)"
                   >+</i-button>
                 </div>
               </i-col>
@@ -92,20 +92,18 @@ export default {
       });
     });
   },
-
   methods: {
     gotitle(id) {
       this.id = id;
       this.goto.scrollToElement(document.getElementById(id), 600);
     },
-    add(i) {
+    add(name) {
       //加商品
-      this.$store.commit("add", i);
-      console.log(this.$store.getters.tel)
+      this.$store.commit("add", name);
     },
-    del(i) {
+    del(name) {
       //减商品
-      this.$store.commit("del", i);
+      this.$store.commit("del", name);
     }
   },
   //计算属性

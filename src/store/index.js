@@ -13,18 +13,24 @@ export default new Vuex.Store({
       // 写入数据
       state.goodslist = list
     },
-    add(state, {
-      i,
-      y
-    }) { //加商品
-      state.goodslist[i].foods[y].num++; //商品数量增加
+    add(state, name) { //加商品
+      state.goodslist.map((v) => {
+        v.foods.map((x) => {
+          if (x.name == name) {
+            x.num++
+          }
+        })
+      }) //商品数量增加
 
     },
-    del(state, {
-      i,
-      y
-    }) { //减商品
-      state.goodslist[i].foods[y].num--;
+    del(state, name) { //减商品
+      state.goodslist.map((v) => {
+        v.foods.map((x) => {
+          if (x.name == name) {
+            x.num--
+          }
+        })
+      }) //商品数量增加
     }
   }, //计算属性
   getters: {
@@ -35,13 +41,26 @@ export default new Vuex.Store({
           if (x.num > 0) {
             arr.push({
               name: x.name, //商品名称
-              price:x.price, //单价
-              count:x.num,//商品数量
+              price: x.price, //单价
+              count: x.num, //商品数量
             })
           }
         })
       })
-      return arr //返货购物车数组
+      Array.prototype.arrx=function(){
+        var arr= this;
+        for (var i = 0; i < arr.length - 1; i++) {
+            for (var j = i + 1; j < arr.length; j++) {
+                if (arr[i].name == arr[j].name) {
+                    arr.splice(j, 1);
+                    //因为数组长度减小1，所以直接 j++ 会漏掉一个元素，所以要 j--
+                    j--;
+                }
+            }
+        }
+        return arr
+    }
+      return arr.arrx();
 
     }
 

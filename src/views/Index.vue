@@ -30,10 +30,10 @@
       <router-link to="/Business">商家</router-link>
     </div>
     <!-- 内容区 -->
-    <router-view></router-view>
+    <router-view  @click="shopcarshow=false"></router-view>
     <!-- 底部购物车 -->
      <transition name="slide-fade">
-    <div class="shopx" v-show="shopcarshow">购物车板子</div>
+    <div class="shopx" v-show="shopcarshow"><Shopcar></Shopcar></div>
      </transition>
 
     <div style="width: 100%;height: 51px;"></div>
@@ -43,7 +43,7 @@
           <img src="../assets/images/SVG/shopping_cart.svg" />
         </div>
       </i-col>
-      <i-col span="10">￥10 | 另需配送费4元</i-col>
+      <i-col span="10"><span style="font-size: 24px;color: #fff;">￥{{cont}}</span> | 另需配送费4元</i-col>
       <i-col span="8" style=" background: #3c3431;">￥20起送</i-col>
     </Row>
   </div>
@@ -52,19 +52,36 @@
 <script>
 //引入api
 import { seller } from "../api/apis";
+import Shopcar from "./Shopcar"
 export default {
   data() {
     return {
       bus: [],
-      shopcarshow: false
+      shopcarshow: false//是否显示购物车
     };
   },
-
-  created() {
+  components:{  //引入购物车组件
+      Shopcar
+  },
+  created() { //渲染前加载数据
     seller().then(res => {
       this.bus = res.data.data;
       // console.log(this.bus.supports);
     });
+  },
+  computed:{//计算属性
+    cont(){
+       //返货总价格
+         let con=0;
+        this.$store.getters.tel.map((v)=>{
+            
+          con +=(v.price*v.count)
+
+        })
+       return con
+    }
+
+
   }
 };
 </script>
@@ -169,10 +186,9 @@ export default {
   }
   .shopx {
     width: 100%;
-    height: 50px;
-    background: red;
     position: fixed;
-    bottom: 40px;
+    bottom: 38px;
+    background: #fff;
   }
 
   /* 可以设置不同的进入和离开动画 */
